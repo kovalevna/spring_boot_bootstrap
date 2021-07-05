@@ -4,6 +4,7 @@ import com.example.spring_boot.models.Role;
 import com.example.spring_boot.models.User;
 import com.example.spring_boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,8 @@ public class AdminController {
 
     @GetMapping()
     public String getUsers(ModelMap model) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("user", userService.findByUsername(name));
         model.addAttribute("users", userService.findAll());
         return "users";
     }
@@ -62,11 +65,16 @@ public class AdminController {
 
     @PatchMapping("/{id}/edit")
     public String updateUser(@ModelAttribute("user") User user, @ModelAttribute("new_role") String new_role) {
+        User newUser = userService.findByUsername(user.getUsername());
         Role role = new Role((new_role.equals("ADMIN") ? 1L : 2L), "ROLE" + new_role);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword().equals("")) {
+            user.setPassword(newUser.getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userService.save(user);
         return "redirect:/admin";
     }
