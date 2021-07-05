@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://springframework.org/security/tags">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User</title>
+</head>
+<body>
+
+<p th:text="${user.getName()}">Value</p>
+<p th:text="${user.getLastname()}">Value</p>
+<p th:text="${user.getAge()}">Value</p>
+<p th:text="${user.getUsername()}">Value</p>
+<p th:text="${user.getPassword()}">Value</p>
+<p th:text="${user.getRoles()}">Value</p>
+
+<br>
+
+<div sec:authorize="hasRole('ROLE_USER')">
+<a th:href="@{/logout}">Logout</a>
+</div>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+  <br>
+  <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a>
+
+  <form th:method="DELETE">
+    <input type="submit" value="Delete"/>
+  </form>
+</div>
+
+</body>
+</html>
