@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}/edit")
-    public String updateUser(@ModelAttribute("user") User user, @ModelAttribute("new_role") String new_role) {
+    public String updateUser(@ModelAttribute("user") User user, @ModelAttribute("my_role") String new_role) {
         User newUser = userService.findByUsername(user.getUsername());
         Role role = new Role((new_role.equals("ADMIN") ? 1L : 2L), "ROLE" + new_role);
         Set<Role> roles = new HashSet<>();
