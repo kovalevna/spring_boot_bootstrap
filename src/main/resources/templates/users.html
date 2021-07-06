@@ -137,9 +137,10 @@
                                                     <div class="form-group text-center">
                                                         <b><label for="role">Role</label></b>
                                                         <br>
-                                                        <select name="my_role" id="role">
-                                                            <option>USER</option>
-                                                            <option>ADMIN</option>
+                                                        <select class="form-control" multiple name="rolesList" id="role"
+                                                                size="2">
+                                                            <option name="ROLE_USER" value="ROLE_USER">USER</option>
+                                                            <option name="ROLE_ADMIN" value="ROLE_ADMIN">ADMIN</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group"
@@ -196,9 +197,10 @@
                                                     <div class="form-group text-center">
                                                         <b><label for="delete_role">Role</label></b>
                                                         <br>
-                                                        <select name="my_role" id="delete_role" disabled>
-                                                            <option>USER</option>
-                                                            <option>ADMIN</option>
+                                                        <select class="form-control" multiple name="rolesList" id="delete_role"
+                                                                size="2" disabled>
+                                                            <option name="ROLE_USER" value="ROLE_USER">USER</option>
+                                                            <option name="ROLE_ADMIN" value="ROLE_ADMIN">ADMIN</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group text-center"
@@ -251,11 +253,12 @@
                                     </div>
 
                                     <div class="form-group text-center">
-                                        <b><label for="add_role">Role</label></b>
+                                        <b><label>Role</label></b>
                                         <br>
-                                        <select name="my_role" id="add_role">
-                                            <option>USER</option>
-                                            <option>ADMIN</option>
+                                        <select class="form-control" multiple name="rolesList" id="roless"
+                                                size="2">
+                                            <option name="ROLE_USER" value="ROLE_USER">USER</option>
+                                            <option name="ROLE_ADMIN" value="ROLE_ADMIN">ADMIN</option>
                                         </select>
                                     </div>
                                     <div class="form-group text-center mt-2">

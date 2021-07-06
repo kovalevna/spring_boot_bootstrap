@@ -46,12 +46,20 @@ public class AdminController {
         return "new";
     }
 
-    @PostMapping()
+    /*@PostMapping()
     public String addUser(@ModelAttribute("user") User user, @ModelAttribute("my_role") String my_role) {
         Role role = new Role((my_role.equals("ADMIN") ? 1L : 2L), "ROLE" + my_role);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.save(user);
+        return "redirect:/admin";
+    }*/
+
+    @PostMapping()
+    public String addUser(@ModelAttribute("user") User user, @RequestParam(value= "rolesList", required = false) String rolesList) {
+        user.setRoles(setRoles(rolesList));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/admin";
@@ -64,12 +72,9 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}/edit")
-    public String updateUser(@ModelAttribute("user") User user, @ModelAttribute("my_role") String new_role) {
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam(value= "rolesList", required = false) String rolesList) {
         User newUser = userService.findByUsername(user.getUsername());
-        Role role = new Role((new_role.equals("ADMIN") ? 1L : 2L), "ROLE" + new_role);
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
+        user.setRoles(setRoles(rolesList));
         if (user.getPassword().equals("")) {
             user.setPassword(newUser.getPassword());
         } else {
@@ -83,6 +88,21 @@ public class AdminController {
     public String delete(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/admin";
+    }
+
+    private Set<Role> setRoles(String rolesList) {
+        Set<Role> roles = new HashSet<>();
+
+        rolesList = rolesList == null ? "" : rolesList;
+        if (rolesList.contains("ROLE_ADMIN")) {
+            roles.add(new Role(1L, "ROLE_ADMIN"));
+        }
+
+        if (rolesList.contains("ROLE_USER")) {
+            roles.add(new Role(2L, "ROLE_USER"));
+        }
+
+        return roles;
     }
 
 }
